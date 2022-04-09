@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.system.news.mapper.CompNewsMapper">
+    
+    <resultMap type="CompNews" id="CompNewsResult">
+        <result property="newsId"    column="news_id"    />
+        <result property="newsUserid"    column="news_userid"    />
+        <result property="newsUsername"    column="news_username"    />
+        <result property="newsTitle"    column="news_title"    />
+        <result property="newsContent"    column="news_content"    />
+        <result property="newsStatuscode"    column="news_statuscode"    />
+        <result property="newsStatus"    column="news_status"    />
+        <result property="newsOrder"    column="news_order"    />
+        <result property="newsSummary"    column="news_summary"    />
+        <result property="newsThumbnail"    column="news_thumbnail"    />
+        <result property="delflag"    column="delflag"    />
+        <result property="createByid"    column="create_byid"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateByid"    column="update_byid"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectCompNewsVo">
+        select news_id, news_userid, news_username, news_title, news_content, news_statuscode, news_status, news_order, news_summary, news_thumbnail, delflag, create_byid, create_by, create_time, update_byid, update_by, update_time from comp_news
+    </sql>
+
+    <select id="selectCompNewsList" parameterType="CompNews" resultMap="CompNewsResult">
+        <include refid="selectCompNewsVo"/>
+        <where>  
+            <if test="newsUsername != null  and newsUsername != ''"> and news_username like concat('%', #{newsUsername}, '%')</if>
+            <if test="newsTitle != null  and newsTitle != ''"> and news_title like concat('%', #{newsTitle}, '%')</if>
+            <if test="newsStatuscode != null  and newsStatuscode != ''"> and news_statuscode = #{newsStatuscode}</if>
+        </where>
+    </select>
+    
+    <select id="selectCompNewsByNewsId" parameterType="Long" resultMap="CompNewsResult">
+        <include refid="selectCompNewsVo"/>
+        where news_id = #{newsId}
+    </select>
+        
+    <insert id="insertCompNews" parameterType="CompNews" useGeneratedKeys="true" keyProperty="newsId">
+        insert into comp_news
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="newsUserid != null">news_userid,</if>
+            <if test="newsUsername != null">news_username,</if>
+            <if test="newsTitle != null and newsTitle != ''">news_title,</if>
+            <if test="newsContent != null and newsContent != ''">news_content,</if>
+            <if test="newsStatuscode != null and newsStatuscode != ''">news_statuscode,</if>
+            <if test="newsStatus != null">news_status,</if>
+            <if test="newsOrder != null">news_order,</if>
+            <if test="newsSummary != null and newsSummary != ''">news_summary,</if>
+            <if test="newsThumbnail != null and newsThumbnail != ''">news_thumbnail,</if>
+            <if test="delflag != null">delflag,</if>
+            <if test="createByid != null">create_byid,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateByid != null">update_byid,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="newsUserid != null">#{newsUserid},</if>
+            <if test="newsUsername != null">#{newsUsername},</if>
+            <if test="newsTitle != null and newsTitle != ''">#{newsTitle},</if>
+            <if test="newsContent != null and newsContent != ''">#{newsContent},</if>
+            <if test="newsStatuscode != null and newsStatuscode != ''">#{newsStatuscode},</if>
+            <if test="newsStatus != null">#{newsStatus},</if>
+            <if test="newsOrder != null">#{newsOrder},</if>
+            <if test="newsSummary != null and newsSummary != ''">#{newsSummary},</if>
+            <if test="newsThumbnail != null and newsThumbnail != ''">#{newsThumbnail},</if>
+            <if test="delflag != null">#{delflag},</if>
+            <if test="createByid != null">#{createByid},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateByid != null">#{updateByid},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateCompNews" parameterType="CompNews">
+        update comp_news
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="newsUserid != null">news_userid = #{newsUserid},</if>
+            <if test="newsUsername != null">news_username = #{newsUsername},</if>
+            <if test="newsTitle != null and newsTitle != ''">news_title = #{newsTitle},</if>
+            <if test="newsContent != null and newsContent != ''">news_content = #{newsContent},</if>
+            <if test="newsStatuscode != null and newsStatuscode != ''">news_statuscode = #{newsStatuscode},</if>
+            <if test="newsStatus != null">news_status = #{newsStatus},</if>
+            <if test="newsOrder != null">news_order = #{newsOrder},</if>
+            <if test="newsSummary != null and newsSummary != ''">news_summary = #{newsSummary},</if>
+            <if test="newsThumbnail != null and newsThumbnail != ''">news_thumbnail = #{newsThumbnail},</if>
+            <if test="delflag != null">delflag = #{delflag},</if>
+            <if test="createByid != null">create_byid = #{createByid},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateByid != null">update_byid = #{updateByid},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where news_id = #{newsId}
+    </update>
+
+    <delete id="deleteCompNewsByNewsId" parameterType="Long">
+        delete from comp_news where news_id = #{newsId}
+    </delete>
+
+    <delete id="deleteCompNewsByNewsIds" parameterType="String">
+        delete from comp_news where news_id in 
+        <foreach item="newsId" collection="array" open="(" separator="," close=")">
+            #{newsId}
+        </foreach>
+    </delete>
+
+</mapper>

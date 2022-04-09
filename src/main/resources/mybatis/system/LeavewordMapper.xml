@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.system.leaveword.mapper.LeavewordMapper">
+    
+    <resultMap type="Leaveword" id="LeavewordResult">
+        <result property="lwId"    column="lw_id"    />
+        <result property="lwStuid"    column="lw_stuid"    />
+        <result property="lwStuno"    column="lw_stuno"    />
+        <result property="lwStuname"    column="lw_stuname"    />
+        <result property="lwContent"    column="lw_content"    />
+        <result property="lwLeavetime"    column="lw_leavetime"    />
+        <result property="delflag"    column="delflag"    />
+        <result property="createByid"    column="create_byid"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateByid"    column="update_byid"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectLeavewordVo">
+        select lw_id, lw_stuid, lw_stuno, lw_stuname, lw_content, lw_leavetime, delflag, create_byid, create_by, create_time, update_byid, update_by, update_time from leaveword
+    </sql>
+
+    <select id="selectLeavewordList" parameterType="Leaveword" resultMap="LeavewordResult">
+        <include refid="selectLeavewordVo"/>
+        <where>  
+            <if test="lwStuname != null  and lwStuname != ''"> and lw_stuname like concat('%', #{lwStuname}, '%')</if>
+            <if test="lwLeavetime != null "> and lw_leavetime = #{lwLeavetime}</if>
+        </where>
+    </select>
+    
+    <select id="selectLeavewordByLwId" parameterType="Long" resultMap="LeavewordResult">
+        <include refid="selectLeavewordVo"/>
+        where lw_id = #{lwId}
+    </select>
+        
+    <insert id="insertLeaveword" parameterType="Leaveword" useGeneratedKeys="true" keyProperty="lwId">
+        insert into leaveword
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="lwStuid != null">lw_stuid,</if>
+            <if test="lwStuno != null">lw_stuno,</if>
+            <if test="lwStuname != null">lw_stuname,</if>
+            <if test="lwContent != null and lwContent != ''">lw_content,</if>
+            <if test="lwLeavetime != null">lw_leavetime,</if>
+            <if test="delflag != null">delflag,</if>
+            <if test="createByid != null">create_byid,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateByid != null">update_byid,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="lwStuid != null">#{lwStuid},</if>
+            <if test="lwStuno != null">#{lwStuno},</if>
+            <if test="lwStuname != null">#{lwStuname},</if>
+            <if test="lwContent != null and lwContent != ''">#{lwContent},</if>
+            <if test="lwLeavetime != null">#{lwLeavetime},</if>
+            <if test="delflag != null">#{delflag},</if>
+            <if test="createByid != null">#{createByid},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateByid != null">#{updateByid},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateLeaveword" parameterType="Leaveword">
+        update leaveword
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="lwStuid != null">lw_stuid = #{lwStuid},</if>
+            <if test="lwStuno != null">lw_stuno = #{lwStuno},</if>
+            <if test="lwStuname != null">lw_stuname = #{lwStuname},</if>
+            <if test="lwContent != null and lwContent != ''">lw_content = #{lwContent},</if>
+            <if test="lwLeavetime != null">lw_leavetime = #{lwLeavetime},</if>
+            <if test="delflag != null">delflag = #{delflag},</if>
+            <if test="createByid != null">create_byid = #{createByid},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateByid != null">update_byid = #{updateByid},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where lw_id = #{lwId}
+    </update>
+
+    <delete id="deleteLeavewordByLwId" parameterType="Long">
+        delete from leaveword where lw_id = #{lwId}
+    </delete>
+
+    <delete id="deleteLeavewordByLwIds" parameterType="String">
+        delete from leaveword where lw_id in 
+        <foreach item="lwId" collection="array" open="(" separator="," close=")">
+            #{lwId}
+        </foreach>
+    </delete>
+
+</mapper>

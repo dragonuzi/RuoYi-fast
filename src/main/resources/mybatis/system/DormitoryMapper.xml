@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.system.dormitory.mapper.DormitoryMapper">
+    
+    <resultMap type="Dormitory" id="DormitoryResult">
+        <result property="dorId"    column="dor_id"    />
+        <result property="dorParentid"    column="dor_parentid"    />
+        <result property="dorNo"    column="dor_no"    />
+        <result property="dorName"    column="dor_name"    />
+        <result property="dorBeds"    column="dor_beds"    />
+        <result property="dorDescription"    column="dor_description"    />
+        <result property="remark"    column="remark"    />
+        <result property="delflag"    column="delflag"    />
+        <result property="createByid"    column="create_byid"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateByid"    column="update_byid"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="parentName" column="parent_name" />
+    </resultMap>
+
+    <sql id="selectDormitoryVo">
+        select dor_id, dor_parentid, dor_no, dor_name, dor_beds, dor_description, remark, delflag, create_byid, create_by, create_time, update_byid, update_by, update_time from dormitory
+    </sql>
+
+    <select id="selectDormitoryList" parameterType="Dormitory" resultMap="DormitoryResult">
+        <include refid="selectDormitoryVo"/>
+        <where>  
+            <if test="dorNo != null  and dorNo != ''"> and dor_no = #{dorNo}</if>
+            <if test="dorName != null  and dorName != ''"> and dor_name like concat('%', #{dorName}, '%')</if>
+        </where>
+        order by dor_parentid
+    </select>
+    
+    <select id="selectDormitoryByDorId" parameterType="Long" resultMap="DormitoryResult">
+        select t.dor_id, t.dor_parentid, t.dor_no, t.dor_name, t.dor_beds, t.dor_description, t.remark, t.delflag, t.create_byid, t.create_by, t.create_time, t.update_byid, t.update_by, t.update_time, p.dor_no as parent_name
+        from dormitory t
+        left join dormitory p on p.dor_id = t.dor_parentid
+        where t.dor_id = #{dorId}
+    </select>
+        
+    <insert id="insertDormitory" parameterType="Dormitory">
+        insert into dormitory
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="dorId != null">dor_id,</if>
+            <if test="dorParentid != null and dorParentid != ''">dor_parentid,</if>
+            <if test="dorNo != null and dorNo != ''">dor_no,</if>
+            <if test="dorName != null and dorName != ''">dor_name,</if>
+            <if test="dorBeds != null">dor_beds,</if>
+            <if test="dorDescription != null">dor_description,</if>
+            <if test="remark != null">remark,</if>
+            <if test="delflag != null">delflag,</if>
+            <if test="createByid != null">create_byid,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateByid != null">update_byid,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="dorId != null">#{dorId},</if>
+            <if test="dorParentid != null and dorParentid != ''">#{dorParentid},</if>
+            <if test="dorNo != null and dorNo != ''">#{dorNo},</if>
+            <if test="dorName != null and dorName != ''">#{dorName},</if>
+            <if test="dorBeds != null">#{dorBeds},</if>
+            <if test="dorDescription != null">#{dorDescription},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="delflag != null">#{delflag},</if>
+            <if test="createByid != null">#{createByid},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateByid != null">#{updateByid},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateDormitory" parameterType="Dormitory">
+        update dormitory
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="dorParentid != null and dorParentid != ''">dor_parentid = #{dorParentid},</if>
+            <if test="dorNo != null and dorNo != ''">dor_no = #{dorNo},</if>
+            <if test="dorName != null and dorName != ''">dor_name = #{dorName},</if>
+            <if test="dorBeds != null">dor_beds = #{dorBeds},</if>
+            <if test="dorDescription != null">dor_description = #{dorDescription},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="delflag != null">delflag = #{delflag},</if>
+            <if test="createByid != null">create_byid = #{createByid},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateByid != null">update_byid = #{updateByid},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where dor_id = #{dorId}
+    </update>
+
+    <delete id="deleteDormitoryByDorId" parameterType="Long">
+        delete from dormitory where dor_id = #{dorId}
+    </delete>
+
+    <delete id="deleteDormitoryByDorIds" parameterType="String">
+        delete from dormitory where dor_id in 
+        <foreach item="dorId" collection="array" open="(" separator="," close=")">
+            #{dorId}
+        </foreach>
+    </delete>
+
+</mapper>

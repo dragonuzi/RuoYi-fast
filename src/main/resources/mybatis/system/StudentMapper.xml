@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.system.student.mapper.StudentMapper">
+    
+    <resultMap type="Student" id="StudentResult">
+        <result property="stuId"    column="stu_id"    />
+        <result property="stuNo"    column="stu_no"    />
+        <result property="stuName"    column="stu_name"    />
+        <result property="stuGender"    column="stu_gender"    />
+        <result property="stuPhoneno"    column="stu_phoneno"    />
+        <result property="stuIdcardno"    column="stu_idcardno"    />
+        <result property="stuAddress"    column="stu_address"    />
+        <result property="stuMajorid"    column="stu_majorid"    />
+        <result property="stuMajor"    column="stu_major"    />
+        <result property="stuClassid"    column="stu_classid"    />
+        <result property="stuClass"    column="stu_class"    />
+        <result property="stuDormitoryid"    column="stu_dormitoryid"    />
+        <result property="stuDormitory"    column="stu_dormitory"    />
+        <result property="stuStatuscode"    column="stu_statuscode"    />
+        <result property="stuStatus"    column="stu_status"    />
+        <result property="delflag"    column="delflag"    />
+        <result property="createByid"    column="create_byid"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateByid"    column="update_byid"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectStudentVo">
+        select stu_id, stu_no, stu_name, stu_gender, stu_phoneno, stu_idcardno, stu_address, stu_majorid, stu_major, stu_classid, stu_class, stu_dormitoryid, stu_dormitory, stu_statuscode, stu_status, delflag, create_byid, create_by, create_time, update_byid, update_by, update_time from student
+    </sql>
+
+    <select id="selectStudentList" parameterType="Student" resultMap="StudentResult">
+        <include refid="selectStudentVo"/>
+        <where>  
+            <if test="stuNo != null  and stuNo != ''"> and stu_no = #{stuNo}</if>
+            <if test="stuName != null  and stuName != ''"> and stu_name like concat('%', #{stuName}, '%')</if>
+            <if test="stuGender != null  and stuGender != ''"> and stu_gender = #{stuGender}</if>
+            <if test="stuPhoneno != null  and stuPhoneno != ''"> and stu_phoneno = #{stuPhoneno}</if>
+            <if test="stuMajorid != null "> and stu_majorid = #{stuMajorid}</if>
+            <if test="stuClassid != null "> and stu_classid = #{stuClassid}</if>
+            <if test="stuDormitoryid != null "> and stu_dormitoryid = #{stuDormitoryid}</if>
+            <if test="stuStatuscode != null  and stuStatuscode != ''"> and stu_statuscode = #{stuStatuscode}</if>
+        </where>
+    </select>
+    
+    <select id="selectStudentByStuId" parameterType="Long" resultMap="StudentResult">
+        <include refid="selectStudentVo"/>
+        where stu_id = #{stuId}
+    </select>
+        
+    <insert id="insertStudent" parameterType="Student">
+        insert into student
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="stuId != null">stu_id,</if>
+            <if test="stuNo != null and stuNo != ''">stu_no,</if>
+            <if test="stuName != null and stuName != ''">stu_name,</if>
+            <if test="stuGender != null and stuGender != ''">stu_gender,</if>
+            <if test="stuPhoneno != null and stuPhoneno != ''">stu_phoneno,</if>
+            <if test="stuIdcardno != null and stuIdcardno != ''">stu_idcardno,</if>
+            <if test="stuAddress != null and stuAddress != ''">stu_address,</if>
+            <if test="stuMajorid != null">stu_majorid,</if>
+            <if test="stuMajor != null">stu_major,</if>
+            <if test="stuClassid != null">stu_classid,</if>
+            <if test="stuClass != null">stu_class,</if>
+            <if test="stuDormitoryid != null">stu_dormitoryid,</if>
+            <if test="stuDormitory != null">stu_dormitory,</if>
+            <if test="stuStatuscode != null and stuStatuscode != ''">stu_statuscode,</if>
+            <if test="stuStatus != null">stu_status,</if>
+            <if test="delflag != null">delflag,</if>
+            <if test="createByid != null">create_byid,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateByid != null">update_byid,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="stuId != null">#{stuId},</if>
+            <if test="stuNo != null and stuNo != ''">#{stuNo},</if>
+            <if test="stuName != null and stuName != ''">#{stuName},</if>
+            <if test="stuGender != null and stuGender != ''">#{stuGender},</if>
+            <if test="stuPhoneno != null and stuPhoneno != ''">#{stuPhoneno},</if>
+            <if test="stuIdcardno != null and stuIdcardno != ''">#{stuIdcardno},</if>
+            <if test="stuAddress != null and stuAddress != ''">#{stuAddress},</if>
+            <if test="stuMajorid != null">#{stuMajorid},</if>
+            <if test="stuMajor != null">#{stuMajor},</if>
+            <if test="stuClassid != null">#{stuClassid},</if>
+            <if test="stuClass != null">#{stuClass},</if>
+            <if test="stuDormitoryid != null">#{stuDormitoryid},</if>
+            <if test="stuDormitory != null">#{stuDormitory},</if>
+            <if test="stuStatuscode != null and stuStatuscode != ''">#{stuStatuscode},</if>
+            <if test="stuStatus != null">#{stuStatus},</if>
+            <if test="delflag != null">#{delflag},</if>
+            <if test="createByid != null">#{createByid},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateByid != null">#{updateByid},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateStudent" parameterType="Student">
+        update student
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="stuNo != null and stuNo != ''">stu_no = #{stuNo},</if>
+            <if test="stuName != null and stuName != ''">stu_name = #{stuName},</if>
+            <if test="stuGender != null and stuGender != ''">stu_gender = #{stuGender},</if>
+            <if test="stuPhoneno != null and stuPhoneno != ''">stu_phoneno = #{stuPhoneno},</if>
+            <if test="stuIdcardno != null and stuIdcardno != ''">stu_idcardno = #{stuIdcardno},</if>
+            <if test="stuAddress != null and stuAddress != ''">stu_address = #{stuAddress},</if>
+            <if test="stuMajorid != null">stu_majorid = #{stuMajorid},</if>
+            <if test="stuMajor != null">stu_major = #{stuMajor},</if>
+            <if test="stuClassid != null">stu_classid = #{stuClassid},</if>
+            <if test="stuClass != null">stu_class = #{stuClass},</if>
+            <if test="stuDormitoryid != null">stu_dormitoryid = #{stuDormitoryid},</if>
+            <if test="stuDormitory != null">stu_dormitory = #{stuDormitory},</if>
+            <if test="stuStatuscode != null and stuStatuscode != ''">stu_statuscode = #{stuStatuscode},</if>
+            <if test="stuStatus != null">stu_status = #{stuStatus},</if>
+            <if test="delflag != null">delflag = #{delflag},</if>
+            <if test="createByid != null">create_byid = #{createByid},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateByid != null">update_byid = #{updateByid},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where stu_id = #{stuId}
+    </update>
+
+    <delete id="deleteStudentByStuId" parameterType="Long">
+        delete from student where stu_id = #{stuId}
+    </delete>
+
+    <delete id="deleteStudentByStuIds" parameterType="String">
+        delete from student where stu_id in 
+        <foreach item="stuId" collection="array" open="(" separator="," close=")">
+            #{stuId}
+        </foreach>
+    </delete>
+
+</mapper>

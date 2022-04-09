@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.system.item.mapper.PaymentItemMapper">
+    
+    <resultMap type="PaymentItem" id="PaymentItemResult">
+        <result property="piId"    column="pi_id"    />
+        <result property="piName"    column="pi_name"    />
+        <result property="piAmount"    column="pi_amount"    />
+        <result property="piDeadline"    column="pi_deadline"    />
+        <result property="remark"    column="remark"    />
+        <result property="delflag"    column="delflag"    />
+        <result property="createByid"    column="create_byid"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateByid"    column="update_byid"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectPaymentItemVo">
+        select pi_id, pi_name, pi_amount, pi_deadline, remark, delflag, create_byid, create_by, create_time, update_byid, update_by, update_time from payment_item
+    </sql>
+
+    <select id="selectPaymentItemList" parameterType="PaymentItem" resultMap="PaymentItemResult">
+        <include refid="selectPaymentItemVo"/>
+        <where>  
+            <if test="piName != null  and piName != ''"> and pi_name like concat('%', #{piName}, '%')</if>
+            <if test="piDeadline != null "> and pi_deadline = #{piDeadline}</if>
+        </where>
+    </select>
+    
+    <select id="selectPaymentItemByPiId" parameterType="Long" resultMap="PaymentItemResult">
+        <include refid="selectPaymentItemVo"/>
+        where pi_id = #{piId}
+    </select>
+        
+    <insert id="insertPaymentItem" parameterType="PaymentItem">
+        insert into payment_item
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="piId != null">pi_id,</if>
+            <if test="piName != null and piName != ''">pi_name,</if>
+            <if test="piAmount != null">pi_amount,</if>
+            <if test="piDeadline != null">pi_deadline,</if>
+            <if test="remark != null">remark,</if>
+            <if test="delflag != null">delflag,</if>
+            <if test="createByid != null">create_byid,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateByid != null">update_byid,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="piId != null">#{piId},</if>
+            <if test="piName != null and piName != ''">#{piName},</if>
+            <if test="piAmount != null">#{piAmount},</if>
+            <if test="piDeadline != null">#{piDeadline},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="delflag != null">#{delflag},</if>
+            <if test="createByid != null">#{createByid},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateByid != null">#{updateByid},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updatePaymentItem" parameterType="PaymentItem">
+        update payment_item
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="piName != null and piName != ''">pi_name = #{piName},</if>
+            <if test="piAmount != null">pi_amount = #{piAmount},</if>
+            <if test="piDeadline != null">pi_deadline = #{piDeadline},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="delflag != null">delflag = #{delflag},</if>
+            <if test="createByid != null">create_byid = #{createByid},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateByid != null">update_byid = #{updateByid},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where pi_id = #{piId}
+    </update>
+
+    <delete id="deletePaymentItemByPiId" parameterType="Long">
+        delete from payment_item where pi_id = #{piId}
+    </delete>
+
+    <delete id="deletePaymentItemByPiIds" parameterType="String">
+        delete from payment_item where pi_id in 
+        <foreach item="piId" collection="array" open="(" separator="," close=")">
+            #{piId}
+        </foreach>
+    </delete>
+
+</mapper>

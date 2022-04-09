@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.system.record.mapper.PaymentRecordMapper">
+    
+    <resultMap type="PaymentRecord" id="PaymentRecordResult">
+        <result property="prId"    column="pr_id"    />
+        <result property="prPiid"    column="pr_piid"    />
+        <result property="prPiname"    column="pr_piname"    />
+        <result property="prStuid"    column="pr_stuid"    />
+        <result property="prStuno"    column="pr_stuno"    />
+        <result property="prStuname"    column="pr_stuname"    />
+        <result property="prPaytime"    column="pr_paytime"    />
+        <result property="delflag"    column="delflag"    />
+        <result property="createByid"    column="create_byid"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateByid"    column="update_byid"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectPaymentRecordVo">
+        select pr_id, pr_piid, pr_piname, pr_stuid, pr_stuno, pr_stuname, pr_paytime, delflag, create_byid, create_by, create_time, update_byid, update_by, update_time from payment_record
+    </sql>
+
+    <select id="selectPaymentRecordList" parameterType="PaymentRecord" resultMap="PaymentRecordResult">
+        <include refid="selectPaymentRecordVo"/>
+        <where>  
+            <if test="prPiid != null "> and pr_piid = #{prPiid}</if>
+            <if test="prStuname != null  and prStuname != ''"> and pr_stuname like concat('%', #{prStuname}, '%')</if>
+            <if test="prPaytime != null "> and pr_paytime = #{prPaytime}</if>
+        </where>
+    </select>
+    
+    <select id="selectPaymentRecordByPrId" parameterType="Long" resultMap="PaymentRecordResult">
+        <include refid="selectPaymentRecordVo"/>
+        where pr_id = #{prId}
+    </select>
+        
+    <insert id="insertPaymentRecord" parameterType="PaymentRecord" useGeneratedKeys="true" keyProperty="prId">
+        insert into payment_record
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="prPiid != null">pr_piid,</if>
+            <if test="prPiname != null">pr_piname,</if>
+            <if test="prStuid != null">pr_stuid,</if>
+            <if test="prStuno != null">pr_stuno,</if>
+            <if test="prStuname != null">pr_stuname,</if>
+            <if test="prPaytime != null">pr_paytime,</if>
+            <if test="delflag != null">delflag,</if>
+            <if test="createByid != null">create_byid,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateByid != null">update_byid,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="prPiid != null">#{prPiid},</if>
+            <if test="prPiname != null">#{prPiname},</if>
+            <if test="prStuid != null">#{prStuid},</if>
+            <if test="prStuno != null">#{prStuno},</if>
+            <if test="prStuname != null">#{prStuname},</if>
+            <if test="prPaytime != null">#{prPaytime},</if>
+            <if test="delflag != null">#{delflag},</if>
+            <if test="createByid != null">#{createByid},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateByid != null">#{updateByid},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updatePaymentRecord" parameterType="PaymentRecord">
+        update payment_record
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="prPiid != null">pr_piid = #{prPiid},</if>
+            <if test="prPiname != null">pr_piname = #{prPiname},</if>
+            <if test="prStuid != null">pr_stuid = #{prStuid},</if>
+            <if test="prStuno != null">pr_stuno = #{prStuno},</if>
+            <if test="prStuname != null">pr_stuname = #{prStuname},</if>
+            <if test="prPaytime != null">pr_paytime = #{prPaytime},</if>
+            <if test="delflag != null">delflag = #{delflag},</if>
+            <if test="createByid != null">create_byid = #{createByid},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateByid != null">update_byid = #{updateByid},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where pr_id = #{prId}
+    </update>
+
+    <delete id="deletePaymentRecordByPrId" parameterType="Long">
+        delete from payment_record where pr_id = #{prId}
+    </delete>
+
+    <delete id="deletePaymentRecordByPrIds" parameterType="String">
+        delete from payment_record where pr_id in 
+        <foreach item="prId" collection="array" open="(" separator="," close=")">
+            #{prId}
+        </foreach>
+    </delete>
+
+</mapper>

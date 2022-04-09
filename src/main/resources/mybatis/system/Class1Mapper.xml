@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.system.class1.mapper.Class1Mapper">
+    
+    <resultMap type="Class1" id="Class1Result">
+        <result property="classId"    column="class_id"    />
+        <result property="className"    column="class_name"    />
+        <result property="classMajorid"    column="class_majorid"    />
+        <result property="classMajor"    column="class_major"    />
+        <result property="remark"    column="remark"    />
+        <result property="delflag"    column="delflag"    />
+        <result property="createByid"    column="create_byid"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateByid"    column="update_byid"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectClass1Vo">
+        select class_id, class_name, class_majorid, class_major, remark, delflag, create_byid, create_by, create_time, update_byid, update_by, update_time from class1
+    </sql>
+
+    <select id="selectClass1List" parameterType="Class1" resultMap="Class1Result">
+        <include refid="selectClass1Vo"/>
+        <where>  
+            <if test="className != null  and className != ''"> and class_name like concat('%', #{className}, '%')</if>
+            <if test="classMajorid != null "> and class_majorid = #{classMajorid}</if>
+        </where>
+    </select>
+    
+    <select id="selectClass1ByClassId" parameterType="Long" resultMap="Class1Result">
+        <include refid="selectClass1Vo"/>
+        where class_id = #{classId}
+    </select>
+        
+    <insert id="insertClass1" parameterType="Class1">
+        insert into class1
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="classId != null">class_id,</if>
+            <if test="className != null and className != ''">class_name,</if>
+            <if test="classMajorid != null">class_majorid,</if>
+            <if test="classMajor != null">class_major,</if>
+            <if test="remark != null">remark,</if>
+            <if test="delflag != null">delflag,</if>
+            <if test="createByid != null">create_byid,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateByid != null">update_byid,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="classId != null">#{classId},</if>
+            <if test="className != null and className != ''">#{className},</if>
+            <if test="classMajorid != null">#{classMajorid},</if>
+            <if test="classMajor != null">#{classMajor},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="delflag != null">#{delflag},</if>
+            <if test="createByid != null">#{createByid},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateByid != null">#{updateByid},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateClass1" parameterType="Class1">
+        update class1
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="className != null and className != ''">class_name = #{className},</if>
+            <if test="classMajorid != null">class_majorid = #{classMajorid},</if>
+            <if test="classMajor != null">class_major = #{classMajor},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="delflag != null">delflag = #{delflag},</if>
+            <if test="createByid != null">create_byid = #{createByid},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateByid != null">update_byid = #{updateByid},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where class_id = #{classId}
+    </update>
+
+    <delete id="deleteClass1ByClassId" parameterType="Long">
+        delete from class1 where class_id = #{classId}
+    </delete>
+
+    <delete id="deleteClass1ByClassIds" parameterType="String">
+        delete from class1 where class_id in 
+        <foreach item="classId" collection="array" open="(" separator="," close=")">
+            #{classId}
+        </foreach>
+    </delete>
+
+</mapper>

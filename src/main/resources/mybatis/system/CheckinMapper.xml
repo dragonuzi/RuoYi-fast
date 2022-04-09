@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.system.checkin.mapper.CheckinMapper">
+    
+    <resultMap type="Checkin" id="CheckinResult">
+        <result property="checkinId"    column="checkin_id"    />
+        <result property="checkinStuid"    column="checkin_stuid"    />
+        <result property="checkinStuno"    column="checkin_stuno"    />
+        <result property="checkinStuname"    column="checkin_stuname"    />
+        <result property="checkinMajorid"    column="checkin_majorid"    />
+        <result property="checkinMajor"    column="checkin_major"    />
+        <result property="checkinClassid"    column="checkin_classid"    />
+        <result property="delflag"    column="delflag"    />
+        <result property="checkinTime"    column="checkin_time"    />
+        <result property="createByid"    column="create_byid"    />
+        <result property="checkinClass"    column="checkin_class"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateByid"    column="update_byid"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectCheckinVo">
+        select checkin_id, checkin_stuid, checkin_stuno, checkin_stuname, checkin_majorid, checkin_major, checkin_classid, delflag, checkin_time, create_byid, checkin_class, create_by, create_time, update_byid, update_by, update_time from checkin
+    </sql>
+
+    <select id="selectCheckinList" parameterType="Checkin" resultMap="CheckinResult">
+        <include refid="selectCheckinVo"/>
+        <where>  
+            <if test="checkinStuname != null  and checkinStuname != ''"> and checkin_stuname like concat('%', #{checkinStuname}, '%')</if>
+            <if test="checkinMajorid != null "> and checkin_majorid = #{checkinMajorid}</if>
+            <if test="checkinClassid != null "> and checkin_classid = #{checkinClassid}</if>
+        </where>
+    </select>
+    
+    <select id="selectCheckinByCheckinId" parameterType="Long" resultMap="CheckinResult">
+        <include refid="selectCheckinVo"/>
+        where checkin_id = #{checkinId}
+    </select>
+        
+    <insert id="insertCheckin" parameterType="Checkin">
+        insert into checkin
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="checkinId != null">checkin_id,</if>
+            <if test="checkinStuid != null">checkin_stuid,</if>
+            <if test="checkinStuno != null">checkin_stuno,</if>
+            <if test="checkinStuname != null">checkin_stuname,</if>
+            <if test="checkinMajorid != null">checkin_majorid,</if>
+            <if test="checkinMajor != null">checkin_major,</if>
+            <if test="checkinClassid != null">checkin_classid,</if>
+            <if test="delflag != null">delflag,</if>
+            <if test="checkinTime != null">checkin_time,</if>
+            <if test="createByid != null">create_byid,</if>
+            <if test="checkinClass != null">checkin_class,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateByid != null">update_byid,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="checkinId != null">#{checkinId},</if>
+            <if test="checkinStuid != null">#{checkinStuid},</if>
+            <if test="checkinStuno != null">#{checkinStuno},</if>
+            <if test="checkinStuname != null">#{checkinStuname},</if>
+            <if test="checkinMajorid != null">#{checkinMajorid},</if>
+            <if test="checkinMajor != null">#{checkinMajor},</if>
+            <if test="checkinClassid != null">#{checkinClassid},</if>
+            <if test="delflag != null">#{delflag},</if>
+            <if test="checkinTime != null">#{checkinTime},</if>
+            <if test="createByid != null">#{createByid},</if>
+            <if test="checkinClass != null">#{checkinClass},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateByid != null">#{updateByid},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateCheckin" parameterType="Checkin">
+        update checkin
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="checkinStuid != null">checkin_stuid = #{checkinStuid},</if>
+            <if test="checkinStuno != null">checkin_stuno = #{checkinStuno},</if>
+            <if test="checkinStuname != null">checkin_stuname = #{checkinStuname},</if>
+            <if test="checkinMajorid != null">checkin_majorid = #{checkinMajorid},</if>
+            <if test="checkinMajor != null">checkin_major = #{checkinMajor},</if>
+            <if test="checkinClassid != null">checkin_classid = #{checkinClassid},</if>
+            <if test="delflag != null">delflag = #{delflag},</if>
+            <if test="checkinTime != null">checkin_time = #{checkinTime},</if>
+            <if test="createByid != null">create_byid = #{createByid},</if>
+            <if test="checkinClass != null">checkin_class = #{checkinClass},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateByid != null">update_byid = #{updateByid},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where checkin_id = #{checkinId}
+    </update>
+
+    <delete id="deleteCheckinByCheckinId" parameterType="Long">
+        delete from checkin where checkin_id = #{checkinId}
+    </delete>
+
+    <delete id="deleteCheckinByCheckinIds" parameterType="String">
+        delete from checkin where checkin_id in 
+        <foreach item="checkinId" collection="array" open="(" separator="," close=")">
+            #{checkinId}
+        </foreach>
+    </delete>
+
+</mapper>
