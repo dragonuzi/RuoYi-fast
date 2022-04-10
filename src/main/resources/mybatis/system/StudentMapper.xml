@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ruoyi.project.system.student.mapper.StudentMapper">
-    
+
     <resultMap type="Student" id="StudentResult">
         <result property="stuId"    column="stu_id"    />
+        <result property="stuUserid"    column="stu_userid"    />
+        <result property="stuUsername"    column="stu_username"    />
         <result property="stuNo"    column="stu_no"    />
         <result property="stuName"    column="stu_name"    />
         <result property="stuGender"    column="stu_gender"    />
@@ -30,32 +32,35 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectStudentVo">
-        select stu_id, stu_no, stu_name, stu_gender, stu_phoneno, stu_idcardno, stu_address, stu_majorid, stu_major, stu_classid, stu_class, stu_dormitoryid, stu_dormitory, stu_statuscode, stu_status, delflag, create_byid, create_by, create_time, update_byid, update_by, update_time from student
+        select stu_id, stu_userid, stu_username, stu_no, stu_name, stu_gender, stu_phoneno, stu_idcardno, stu_address, stu_majorid, stu_major, stu_classid, stu_class, stu_dormitoryid, stu_dormitory, stu_statuscode, stu_status, delflag, create_byid, create_by, create_time, update_byid, update_by, update_time from student
     </sql>
 
     <select id="selectStudentList" parameterType="Student" resultMap="StudentResult">
         <include refid="selectStudentVo"/>
-        <where>  
+        <where>
+            <if test="stuUserid != null  and stuUserid != ''"> and stu_userid = #{stuUserid}</if>
+            <if test="stuId != null  and stuId != ''"> and stu_id = #{stuId}</if>
             <if test="stuNo != null  and stuNo != ''"> and stu_no = #{stuNo}</if>
             <if test="stuName != null  and stuName != ''"> and stu_name like concat('%', #{stuName}, '%')</if>
             <if test="stuGender != null  and stuGender != ''"> and stu_gender = #{stuGender}</if>
             <if test="stuPhoneno != null  and stuPhoneno != ''"> and stu_phoneno = #{stuPhoneno}</if>
-            <if test="stuMajorid != null "> and stu_majorid = #{stuMajorid}</if>
-            <if test="stuClassid != null "> and stu_classid = #{stuClassid}</if>
-            <if test="stuDormitoryid != null "> and stu_dormitoryid = #{stuDormitoryid}</if>
+            <if test="stuMajor != null  and stuMajor != ''"> and stu_major like concat('%', #{stuMajor}, '%')</if>
+            <if test="stuClass != null  and stuClass != ''"> and stu_class like concat('%', #{stuClass}, '%')</if>
             <if test="stuStatuscode != null  and stuStatuscode != ''"> and stu_statuscode = #{stuStatuscode}</if>
         </where>
     </select>
-    
+
     <select id="selectStudentByStuId" parameterType="Long" resultMap="StudentResult">
         <include refid="selectStudentVo"/>
         where stu_id = #{stuId}
     </select>
-        
+
     <insert id="insertStudent" parameterType="Student">
         insert into student
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="stuId != null">stu_id,</if>
+            <if test="stuUserid != null">stu_userid,</if>
+            <if test="stuUsername != null">stu_username,</if>
             <if test="stuNo != null and stuNo != ''">stu_no,</if>
             <if test="stuName != null and stuName != ''">stu_name,</if>
             <if test="stuGender != null and stuGender != ''">stu_gender,</if>
@@ -77,9 +82,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="updateByid != null">update_byid,</if>
             <if test="updateBy != null">update_by,</if>
             <if test="updateTime != null">update_time,</if>
-         </trim>
+        </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="stuId != null">#{stuId},</if>
+            <if test="stuUserid != null">#{stuUserid},</if>
+            <if test="stuUsername != null">#{stuUsername},</if>
             <if test="stuNo != null and stuNo != ''">#{stuNo},</if>
             <if test="stuName != null and stuName != ''">#{stuName},</if>
             <if test="stuGender != null and stuGender != ''">#{stuGender},</if>
@@ -101,12 +108,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="updateByid != null">#{updateByid},</if>
             <if test="updateBy != null">#{updateBy},</if>
             <if test="updateTime != null">#{updateTime},</if>
-         </trim>
+        </trim>
     </insert>
 
     <update id="updateStudent" parameterType="Student">
         update student
         <trim prefix="SET" suffixOverrides=",">
+            <if test="stuUserid != null">stu_userid = #{stuUserid},</if>
+            <if test="stuUsername != null">stu_username = #{stuUsername},</if>
             <if test="stuNo != null and stuNo != ''">stu_no = #{stuNo},</if>
             <if test="stuName != null and stuName != ''">stu_name = #{stuName},</if>
             <if test="stuGender != null and stuGender != ''">stu_gender = #{stuGender},</if>
@@ -137,7 +146,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </delete>
 
     <delete id="deleteStudentByStuIds" parameterType="String">
-        delete from student where stu_id in 
+        delete from student where stu_id in
         <foreach item="stuId" collection="array" open="(" separator="," close=")">
             #{stuId}
         </foreach>

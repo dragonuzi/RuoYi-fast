@@ -12,7 +12,7 @@
                 <label class="col-sm-3 control-label is-required">缴费项：</label>
                 <div class="col-sm-8">
                     <select name="prPiid" class="form-control m-b" th:with="type=${@dict.getType('sys_common_status')}" required>
-                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}" th:field="*{prPiid}"></option>
+                        <option th:each="payItem : ${payItems}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}" th:field="*{prPiid}"></option>
                     </select>
                 </div>
             </div>
@@ -26,7 +26,7 @@
                 <label class="col-sm-3 control-label">缴费时间：</label>
                 <div class="col-sm-8">
                     <div class="input-group date">
-                        <input name="prPaytime" th:value="${#dates.format(paymentRecord.prPaytime, 'yyyy-MM-dd')}" class="form-control" placeholder="yyyy-MM-dd" type="text">
+                        <input name="prPaytime" th:value="${#dates.format(paymentRecord.prPaytime, 'yyyy-MM-dd HH:mm:ss')}" class="form-control" type="text">
                         <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                     </div>
                 </div>

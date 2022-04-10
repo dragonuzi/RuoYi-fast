@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <th:block th:include="include :: header('弹窗提示')" />
+    <th:block th:include="include :: datetimepicker-css" />
+</head>
+<body>
+    <h4>[[${msg}]]</h4>
+<th:block th:include="include :: footer" />
+<th:block th:include="include :: datetimepicker-js" />
+<script th:inline="javascript">
+
+    var prefix = ctx + "system/item";
+    $("#form-item-edit").validate({
+        focusCleanup: true
+    });
+
+    function submitHandler() {
+        if ($.validate.form()) {
+            $.operate.save(prefix + "/edit", $('#form-item-edit').serialize());
+        }
+    }
+
+    $("input[name='piDeadline']").datetimepicker({
+        format: "yyyy-mm-dd HH:mm:ss",
+        minView: "month",
+        autoclose: true
+    });
+
+    onload=function(){
+        var msg =  [[${msg}]]; //官方写法
+        if(msg){
+            //alert(msg);
+        }
+    };
+</script>
+</body>
+</html>

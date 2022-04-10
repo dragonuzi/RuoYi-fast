@@ -1326,8 +1326,39 @@ var table = {
                     $.modal.alertError(result.msg);
                 }
                 $.modal.closeLoading();
-            }
+            },
+            // 跳转支付页面
+            pay: function(id) {
+                table.set();
+                var payUrl='system/item/pay/{id}';
+                if($.common.isEmpty(id) && table.options.type == table_type.bootstrapTreeTable) {
+                    var row = $("#" + table.options.id).bootstrapTreeTable('getSelections')[0];
+                    if ($.common.isEmpty(row)) {
+                        $.modal.alertWarning("请至少选择一条记录");
+                        return;
+                    }
+                    var url = payUrl.replace("{id}", row[table.options.uniqueId]);
+                    $.modal.open("支付", url);
+                } else {
+                    $.modal.open("支付", $.operate.payUrl(id,payUrl));
+                }
+            },
+            payUrl:function (id,payUrl){
+                var url = "/404.html";
+                if ($.common.isNotEmpty(id)) {
+                    url = payUrl.replace("{id}", id);
+                } else {
+                    var id = $.common.isEmpty(table.options.uniqueId) ? $.table.selectFirstColumns() : $.table.selectColumns(table.options.uniqueId);
+                    if (id.length == 0) {
+                        $.modal.alertWarning("请至少选择一条记录");
+                        return;
+                    }
+                    url = payUrl.replace("{id}", id);
+                }
+                return url;
+            },
         },
+
         // 校验封装处理
         validate: {
             // 判断返回标识是否唯一 false 为存在 true 为不存在

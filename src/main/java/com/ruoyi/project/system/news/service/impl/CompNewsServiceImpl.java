@@ -1,7 +1,10 @@
 package com.ruoyi.project.system.news.service.impl;
 
+import java.util.Date;
 import java.util.List;
 import com.ruoyi.common.utils.DateUtils;
+import com.ruoyi.common.utils.security.ShiroUtils;
+import com.ruoyi.project.system.user.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.project.system.news.mapper.CompNewsMapper;
@@ -54,7 +57,15 @@ public class CompNewsServiceImpl implements ICompNewsService
     @Override
     public int insertCompNews(CompNews compNews)
     {
+        User curUser= ShiroUtils.getSysUser();
+        compNews.setNewsUserid(curUser.getUserId());
+        compNews.setNewsUsername(curUser.getUserName());
+        compNews.setCreateByid(curUser.getUserId());
+        compNews.setCreateBy(curUser.getUserName());
         compNews.setCreateTime(DateUtils.getNowDate());
+        compNews.setUpdateByid(curUser.getUserId());
+        compNews.setUpdateBy(curUser.getUserName());
+        compNews.setUpdateTime(DateUtils.getNowDate());
         return compNewsMapper.insertCompNews(compNews);
     }
 
@@ -67,6 +78,9 @@ public class CompNewsServiceImpl implements ICompNewsService
     @Override
     public int updateCompNews(CompNews compNews)
     {
+        User curUser=ShiroUtils.getSysUser();
+        compNews.setUpdateByid(curUser.getUserId());
+        compNews.setUpdateBy(curUser.getUserName());
         compNews.setUpdateTime(DateUtils.getNowDate());
         return compNewsMapper.updateCompNews(compNews);
     }

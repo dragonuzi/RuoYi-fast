@@ -2,6 +2,7 @@ package com.ruoyi.project.system.class1.mapper;
 
 import java.util.List;
 import com.ruoyi.project.system.class1.domain.Class1;
+import org.springframework.stereotype.Repository;
 
 /**
  * 班级Mapper接口
@@ -9,6 +10,7 @@ import com.ruoyi.project.system.class1.domain.Class1;
  * @author ruoyi
  * @date 2022-04-09
  */
+@Repository
 public interface Class1Mapper 
 {
     /**

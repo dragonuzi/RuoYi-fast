@@ -1,6 +1,14 @@
 package com.ruoyi.project.system.item.controller;
 
 import java.util.List;
+
+import com.ruoyi.common.utils.DateUtils;
+import com.ruoyi.common.utils.security.ShiroUtils;
+import com.ruoyi.project.system.record.domain.PaymentRecord;
+import com.ruoyi.project.system.record.service.IPaymentRecordService;
+import com.ruoyi.project.system.student.domain.Student;
+import com.ruoyi.project.system.student.service.IStudentService;
+import com.ruoyi.project.system.user.domain.User;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -33,6 +41,10 @@ public class PaymentItemController extends BaseController
 
     @Autowired
     private IPaymentItemService paymentItemService;
+    @Autowired
+    private IPaymentRecordService paymentRecordService;
+    @Autowired
+    private IStudentService studentService;
 
     @RequiresPermissions("system:item:view")
     @GetMapping()
@@ -110,9 +122,67 @@ public class PaymentItemController extends BaseController
     @ResponseBody
     public AjaxResult editSave(PaymentItem paymentItem)
     {
+
         return toAjax(paymentItemService.updatePaymentItem(paymentItem));
     }
+    /**
+     * 打开支付页
+     */
+    @RequiresPermissions("system:item:pay")
+    @GetMapping("/pay/{piId}")
+    public String pay(@PathVariable("piId") Long piId, ModelMap mmap)
+    {
+        PaymentItem paymentItem = paymentItemService.selectPaymentItemByPiId(piId);
+        mmap.put("paymentItem", paymentItem);
+        //判断是否已有缴费记录，如有，弹窗提示
+        //1.查询学生学生id，若无学生id，返回无需缴费
+        //2.根据缴费项id和学生id，查询缴费记录，若有，返回错误信息，无需缴费；若无，可以继续缴费
+        User curUser=ShiroUtils.getSysUser();
+        Student param=new Student();
+        param.setStuUserid(curUser.getUserId());
+        List<Student> students=studentService.selectStudentList(param);
+        if(students==null||students.size()==0){
+            mmap.addAttribute("msg","您没有待缴费的项目！");
+            return "/error/warning";
+        }else {
+            Student student=students.get(0);
+            PaymentRecord param1=new PaymentRecord();
+            param1.setPrPiid(paymentItem.getPiId());
+            param1.setPrStuid(student.getStuId());
+            List<PaymentRecord> records=paymentRecordService.selectPaymentRecordList(param1);
+            if(records!=null&&records.size()!=0){
+                mmap.addAttribute("msg","您已缴费，请勿重复缴费！");
+                return "/error/warning";
+            }
+        }
+        return prefix + "/pay";
+    }
 
+    /**
+     * 修改保存缴费项目
+     */
+    @RequiresPermissions("system:item:pay")
+    @Log(title = "缴费", businessType = BusinessType.INSERT)
+    @PostMapping("/pay")
+    @ResponseBody
+    public AjaxResult paySave(PaymentItem paymentItem)
+    {
+        //生成一条缴费记录
+        User curUser= ShiroUtils.getSysUser();
+        Student param=new Student();
+        param.setStuUserid(curUser.getUserId());
+        List<Student> students=studentService.selectStudentList(param);
+        Student student=students.get(0);
+        PaymentRecord paymentRecord=new PaymentRecord();
+        paymentRecord.setPrPiid(paymentItem.getPiId());
+        paymentRecord.setPrPiname(paymentItem.getPiName());
+        paymentRecord.setPrPiamount(paymentItem.getPiAmount());
+        paymentRecord.setPrStuid(student.getStuId());
+        paymentRecord.setPrStuno(student.getStuNo());
+        paymentRecord.setPrStuname(student.getStuName());
+        paymentRecord.setPrPaytime(DateUtils.getNowDate());
+        return toAjax(paymentRecordService.insertPaymentRecord(paymentRecord));
+    }
     /**
      * 删除缴费项目
      */

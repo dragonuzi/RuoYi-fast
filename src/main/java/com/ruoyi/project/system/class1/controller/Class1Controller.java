@@ -1,6 +1,9 @@
 package com.ruoyi.project.system.class1.controller;
 
 import java.util.List;
+
+import com.ruoyi.project.system.major.domain.Major;
+import com.ruoyi.project.system.major.service.IMajorService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -33,6 +36,10 @@ public class Class1Controller extends BaseController
 
     @Autowired
     private IClass1Service class1Service;
+    @Autowired
+    private IMajorService majorService;
+
+
 
     @RequiresPermissions("system:class1:view")
     @GetMapping()
@@ -72,8 +79,10 @@ public class Class1Controller extends BaseController
      * 新增班级
      */
     @GetMapping("/add")
-    public String add()
+    public String add(ModelMap mmap)
     {
+        List<Major> majors=majorService.selectMajorList(new Major());
+        mmap.put("majors",majors);
         return prefix + "/add";
     }
 
@@ -98,6 +107,8 @@ public class Class1Controller extends BaseController
     {
         Class1 class1 = class1Service.selectClass1ByClassId(classId);
         mmap.put("class1", class1);
+        List<Major> majors=majorService.selectMajorList(new Major());
+        mmap.put("majors",majors);
         return prefix + "/edit";
     }
 

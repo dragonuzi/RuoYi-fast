@@ -7,9 +7,9 @@ import com.ruoyi.framework.web.domain.BaseEntity;
 
 /**
  * 学生信息对象 student
- * 
+ *
  * @author ruoyi
- * @date 2022-04-09
+ * @date 2022-04-10
  */
 public class Student extends BaseEntity
 {
@@ -17,6 +17,13 @@ public class Student extends BaseEntity
 
     /** 学生id */
     private Long stuId;
+
+    /** 用户名 */
+    private Long stuUserid;
+
+    /** 用户名 */
+    @Excel(name = "用户名")
+    private String stuUsername;
 
     /** 学号 */
     @Excel(name = "学号")
@@ -64,10 +71,10 @@ public class Student extends BaseEntity
     private String stuDormitory;
 
     /** 状态 */
+    @Excel(name = "状态")
     private String stuStatuscode;
 
     /** 状态 */
-    @Excel(name = "状态")
     private String stuStatus;
 
     /** 是否删除 */
@@ -87,6 +94,24 @@ public class Student extends BaseEntity
     public Long getStuId()
     {
         return stuId;
+    }
+    public void setStuUserid(Long stuUserid)
+    {
+        this.stuUserid = stuUserid;
+    }
+
+    public Long getStuUserid()
+    {
+        return stuUserid;
+    }
+    public void setStuUsername(String stuUsername)
+    {
+        this.stuUsername = stuUsername;
+    }
+
+    public String getStuUsername()
+    {
+        return stuUsername;
     }
     public void setStuNo(String stuNo)
     {
@@ -245,28 +270,30 @@ public class Student extends BaseEntity
     @Override
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
-            .append("stuId", getStuId())
-            .append("stuNo", getStuNo())
-            .append("stuName", getStuName())
-            .append("stuGender", getStuGender())
-            .append("stuPhoneno", getStuPhoneno())
-            .append("stuIdcardno", getStuIdcardno())
-            .append("stuAddress", getStuAddress())
-            .append("stuMajorid", getStuMajorid())
-            .append("stuMajor", getStuMajor())
-            .append("stuClassid", getStuClassid())
-            .append("stuClass", getStuClass())
-            .append("stuDormitoryid", getStuDormitoryid())
-            .append("stuDormitory", getStuDormitory())
-            .append("stuStatuscode", getStuStatuscode())
-            .append("stuStatus", getStuStatus())
-            .append("delflag", getDelflag())
-            .append("createByid", getCreateByid())
-            .append("createBy", getCreateBy())
-            .append("createTime", getCreateTime())
-            .append("updateByid", getUpdateByid())
-            .append("updateBy", getUpdateBy())
-            .append("updateTime", getUpdateTime())
-            .toString();
+                .append("stuId", getStuId())
+                .append("stuUserid", getStuUserid())
+                .append("stuUsername", getStuUsername())
+                .append("stuNo", getStuNo())
+                .append("stuName", getStuName())
+                .append("stuGender", getStuGender())
+                .append("stuPhoneno", getStuPhoneno())
+                .append("stuIdcardno", getStuIdcardno())
+                .append("stuAddress", getStuAddress())
+                .append("stuMajorid", getStuMajorid())
+                .append("stuMajor", getStuMajor())
+                .append("stuClassid", getStuClassid())
+                .append("stuClass", getStuClass())
+                .append("stuDormitoryid", getStuDormitoryid())
+                .append("stuDormitory", getStuDormitory())
+                .append("stuStatuscode", getStuStatuscode())
+                .append("stuStatus", getStuStatus())
+                .append("delflag", getDelflag())
+                .append("createByid", getCreateByid())
+                .append("createBy", getCreateBy())
+                .append("createTime", getCreateTime())
+                .append("updateByid", getUpdateByid())
+                .append("updateBy", getUpdateBy())
+                .append("updateTime", getUpdateTime())
+                .toString();
     }
 }

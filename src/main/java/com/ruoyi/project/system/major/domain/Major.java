@@ -7,9 +7,9 @@ import com.ruoyi.framework.web.domain.BaseEntity;
 
 /**
  * 专业信息对象 major
- * 
+ *
  * @author ruoyi
- * @date 2022-04-09
+ * @date 2022-04-10
  */
 public class Major extends BaseEntity
 {
@@ -18,12 +18,15 @@ public class Major extends BaseEntity
     /** 专业id */
     private Long majorId;
 
+    /** 专业代码 */
+    @Excel(name = "专业代码")
+    private String majorCode;
+
     /** 专业名称 */
     @Excel(name = "专业名称")
     private String majorName;
 
     /** 专业描述 */
-    @Excel(name = "专业描述")
     private String majorDescription;
 
     /** 删除标记 */
@@ -43,6 +46,15 @@ public class Major extends BaseEntity
     public Long getMajorId()
     {
         return majorId;
+    }
+    public void setMajorCode(String majorCode)
+    {
+        this.majorCode = majorCode;
+    }
+
+    public String getMajorCode()
+    {
+        return majorCode;
     }
     public void setMajorName(String majorName)
     {
@@ -93,17 +105,18 @@ public class Major extends BaseEntity
     @Override
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
-            .append("majorId", getMajorId())
-            .append("majorName", getMajorName())
-            .append("majorDescription", getMajorDescription())
-            .append("remark", getRemark())
-            .append("delflag", getDelflag())
-            .append("createByid", getCreateByid())
-            .append("createBy", getCreateBy())
-            .append("createTime", getCreateTime())
-            .append("updateByid", getUpdateByid())
-            .append("updateBy", getUpdateBy())
-            .append("updateTime", getUpdateTime())
-            .toString();
+                .append("majorId", getMajorId())
+                .append("majorCode", getMajorCode())
+                .append("majorName", getMajorName())
+                .append("majorDescription", getMajorDescription())
+                .append("remark", getRemark())
+                .append("delflag", getDelflag())
+                .append("createByid", getCreateByid())
+                .append("createBy", getCreateBy())
+                .append("createTime", getCreateTime())
+                .append("updateByid", getUpdateByid())
+                .append("updateBy", getUpdateBy())
+                .append("updateTime", getUpdateTime())
+                .toString();
     }
 }

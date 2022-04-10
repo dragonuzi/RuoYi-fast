@@ -2,6 +2,7 @@ package com.ruoyi.project.system.record.mapper;
 
 import java.util.List;
 import com.ruoyi.project.system.record.domain.PaymentRecord;
+import org.springframework.stereotype.Repository;
 
 /**
  * 缴费记录Mapper接口
@@ -9,6 +10,7 @@ import com.ruoyi.project.system.record.domain.PaymentRecord;
  * @author ruoyi
  * @date 2022-04-09
  */
+@Repository
 public interface PaymentRecordMapper 
 {
     /**

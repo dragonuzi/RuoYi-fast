@@ -2,6 +2,7 @@ package com.ruoyi.project.system.student.mapper;
 
 import java.util.List;
 import com.ruoyi.project.system.student.domain.Student;
+import org.springframework.stereotype.Repository;
 
 /**
  * 学生信息Mapper接口
@@ -9,6 +10,7 @@ import com.ruoyi.project.system.student.domain.Student;
  * @author ruoyi
  * @date 2022-04-09
  */
+@Repository
 public interface StudentMapper 
 {
     /**

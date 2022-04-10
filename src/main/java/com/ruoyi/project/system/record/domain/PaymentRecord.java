@@ -1,5 +1,6 @@
 package com.ruoyi.project.system.record.domain;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -27,6 +28,10 @@ public class PaymentRecord extends BaseEntity
     @Excel(name = "缴费项")
     private String prPiname;
 
+    /** 缴费金额 */
+    @Excel(name = "缴费金额")
+    private BigDecimal prPiamount;
+
     /** 缴费学生 */
     private Long prStuid;
 
@@ -38,8 +43,8 @@ public class PaymentRecord extends BaseEntity
     private String prStuname;
 
     /** 缴费时间 */
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    @Excel(name = "缴费时间", width = 30, dateFormat = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @Excel(name = "缴费时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
     private Date prPaytime;
 
     /** 删除标记 */
@@ -144,21 +149,26 @@ public class PaymentRecord extends BaseEntity
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
-            .append("prId", getPrId())
-            .append("prPiid", getPrPiid())
-            .append("prPiname", getPrPiname())
-            .append("prStuid", getPrStuid())
-            .append("prStuno", getPrStuno())
-            .append("prStuname", getPrStuname())
-            .append("prPaytime", getPrPaytime())
-            .append("delflag", getDelflag())
-            .append("createByid", getCreateByid())
-            .append("createBy", getCreateBy())
-            .append("createTime", getCreateTime())
-            .append("updateByid", getUpdateByid())
-            .append("updateBy", getUpdateBy())
-            .append("updateTime", getUpdateTime())
-            .toString();
+        return "PaymentRecord{" +
+                "prId=" + prId +
+                ", prPiid=" + prPiid +
+                ", prPiname='" + prPiname + '\'' +
+                ", prPiamount=" + prPiamount +
+                ", prStuid=" + prStuid +
+                ", prStuno='" + prStuno + '\'' +
+                ", prStuname='" + prStuname + '\'' +
+                ", prPaytime=" + prPaytime +
+                ", delflag='" + delflag + '\'' +
+                ", createByid=" + createByid +
+                ", updateByid=" + updateByid +
+                '}';
+    }
+
+    public BigDecimal getPrPiamount() {
+        return prPiamount;
+    }
+
+    public void setPrPiamount(BigDecimal prPiamount) {
+        this.prPiamount = prPiamount;
     }
 }

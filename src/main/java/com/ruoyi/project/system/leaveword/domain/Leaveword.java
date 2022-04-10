@@ -2,6 +2,7 @@ package com.ruoyi.project.system.leaveword.domain;
 
 import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import net.sf.jsqlparser.expression.DateTimeLiteralExpression;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.framework.aspectj.lang.annotation.Excel;
@@ -9,9 +10,9 @@ import com.ruoyi.framework.web.domain.BaseEntity;
 
 /**
  * 留言对象 leaveword
- * 
+ *
  * @author ruoyi
- * @date 2022-04-09
+ * @date 2022-04-10
  */
 public class Leaveword extends BaseEntity
 {
@@ -20,6 +21,13 @@ public class Leaveword extends BaseEntity
     /** 留言id */
     private Long lwId;
 
+    /** 用户 */
+    private Long lwUserid;
+
+    /** 用户 */
+    @Excel(name = "用户")
+    private String lwUsername;
+
     /** 留言学生 */
     private Long lwStuid;
 
@@ -27,7 +35,6 @@ public class Leaveword extends BaseEntity
     private String lwStuno;
 
     /** 留言学生 */
-    @Excel(name = "留言学生")
     private String lwStuname;
 
     /** 留言内容 */
@@ -35,8 +42,8 @@ public class Leaveword extends BaseEntity
     private String lwContent;
 
     /** 留言时间 */
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    @Excel(name = "留言时间", width = 30, dateFormat = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @Excel(name = "留言时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
     private Date lwLeavetime;
 
     /** 删除标记 */
@@ -56,6 +63,24 @@ public class Leaveword extends BaseEntity
     public Long getLwId()
     {
         return lwId;
+    }
+    public void setLwUserid(Long lwUserid)
+    {
+        this.lwUserid = lwUserid;
+    }
+
+    public Long getLwUserid()
+    {
+        return lwUserid;
+    }
+    public void setLwUsername(String lwUsername)
+    {
+        this.lwUsername = lwUsername;
+    }
+
+    public String getLwUsername()
+    {
+        return lwUsername;
     }
     public void setLwStuid(Long lwStuid)
     {
@@ -133,19 +158,21 @@ public class Leaveword extends BaseEntity
     @Override
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
-            .append("lwId", getLwId())
-            .append("lwStuid", getLwStuid())
-            .append("lwStuno", getLwStuno())
-            .append("lwStuname", getLwStuname())
-            .append("lwContent", getLwContent())
-            .append("lwLeavetime", getLwLeavetime())
-            .append("delflag", getDelflag())
-            .append("createByid", getCreateByid())
-            .append("createBy", getCreateBy())
-            .append("createTime", getCreateTime())
-            .append("updateByid", getUpdateByid())
-            .append("updateBy", getUpdateBy())
-            .append("updateTime", getUpdateTime())
-            .toString();
+                .append("lwId", getLwId())
+                .append("lwUserid", getLwUserid())
+                .append("lwUsername", getLwUsername())
+                .append("lwStuid", getLwStuid())
+                .append("lwStuno", getLwStuno())
+                .append("lwStuname", getLwStuname())
+                .append("lwContent", getLwContent())
+                .append("lwLeavetime", getLwLeavetime())
+                .append("delflag", getDelflag())
+                .append("createByid", getCreateByid())
+                .append("createBy", getCreateBy())
+                .append("createTime", getCreateTime())
+                .append("updateByid", getUpdateByid())
+                .append("updateBy", getUpdateBy())
+                .append("updateTime", getUpdateTime())
+                .toString();
     }
 }

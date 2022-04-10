@@ -2,6 +2,7 @@ package com.ruoyi.project.system.major.mapper;
 
 import java.util.List;
 import com.ruoyi.project.system.major.domain.Major;
+import org.springframework.stereotype.Repository;
 
 /**
  * 专业信息Mapper接口
@@ -9,6 +10,7 @@ import com.ruoyi.project.system.major.domain.Major;
  * @author ruoyi
  * @date 2022-04-09
  */
+@Repository
 public interface MajorMapper 
 {
     /**

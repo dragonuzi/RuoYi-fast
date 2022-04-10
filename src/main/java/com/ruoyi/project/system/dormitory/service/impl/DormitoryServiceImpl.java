@@ -2,8 +2,11 @@ package com.ruoyi.project.system.dormitory.service.impl;
 
 import java.util.List;
 import java.util.ArrayList;
+
+import com.ruoyi.common.utils.security.ShiroUtils;
 import com.ruoyi.framework.web.domain.Ztree;
 import com.ruoyi.common.utils.DateUtils;
+import com.ruoyi.project.system.user.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.project.system.dormitory.mapper.DormitoryMapper;
@@ -56,7 +59,13 @@ public class DormitoryServiceImpl implements IDormitoryService
     @Override
     public int insertDormitory(Dormitory dormitory)
     {
+        User curUser= ShiroUtils.getSysUser();
+        dormitory.setCreateByid(curUser.getUserId());
+        dormitory.setCreateBy(curUser.getUserName());
         dormitory.setCreateTime(DateUtils.getNowDate());
+        dormitory.setUpdateByid(curUser.getUserId());
+        dormitory.setUpdateBy(curUser.getUserName());
+        dormitory.setUpdateTime(DateUtils.getNowDate());
         return dormitoryMapper.insertDormitory(dormitory);
     }
 
@@ -69,6 +78,9 @@ public class DormitoryServiceImpl implements IDormitoryService
     @Override
     public int updateDormitory(Dormitory dormitory)
     {
+        User curUser= ShiroUtils.getSysUser();
+        dormitory.setUpdateByid(curUser.getUserId());
+        dormitory.setUpdateBy(curUser.getUserName());
         dormitory.setUpdateTime(DateUtils.getNowDate());
         return dormitoryMapper.updateDormitory(dormitory);
     }
@@ -111,7 +123,7 @@ public class DormitoryServiceImpl implements IDormitoryService
         {
             Ztree ztree = new Ztree();
             ztree.setId(dormitory.getDorId());
-            ztree.setpId(dormitory.getDorParentid());
+            ztree.setpId(Long.valueOf(dormitory.getDorParentid()));
             ztree.setName(dormitory.getDorNo());
             ztree.setTitle(dormitory.getDorNo());
             ztrees.add(ztree);

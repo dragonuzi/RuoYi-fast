@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ruoyi.project.system.leaveword.mapper.LeavewordMapper">
-    
+
     <resultMap type="Leaveword" id="LeavewordResult">
         <result property="lwId"    column="lw_id"    />
+        <result property="lwUserid"    column="lw_userid"    />
+        <result property="lwUsername"    column="lw_username"    />
         <result property="lwStuid"    column="lw_stuid"    />
         <result property="lwStuno"    column="lw_stuno"    />
         <result property="lwStuname"    column="lw_stuname"    />
@@ -21,25 +23,28 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectLeavewordVo">
-        select lw_id, lw_stuid, lw_stuno, lw_stuname, lw_content, lw_leavetime, delflag, create_byid, create_by, create_time, update_byid, update_by, update_time from leaveword
+        select lw_id, lw_userid, lw_username, lw_stuid, lw_stuno, lw_stuname, lw_content, lw_leavetime, delflag, create_byid, create_by, create_time, update_byid, update_by, update_time from leaveword
     </sql>
 
     <select id="selectLeavewordList" parameterType="Leaveword" resultMap="LeavewordResult">
         <include refid="selectLeavewordVo"/>
-        <where>  
-            <if test="lwStuname != null  and lwStuname != ''"> and lw_stuname like concat('%', #{lwStuname}, '%')</if>
+        <where>
+            <if test="lwUsername != null  and lwUsername != ''"> and lw_username like concat('%', #{lwUsername}, '%')</if>
+            <if test="lwContent != null  and lwContent != ''"> and lw_content = #{lwContent}</if>
             <if test="lwLeavetime != null "> and lw_leavetime = #{lwLeavetime}</if>
         </where>
     </select>
-    
+
     <select id="selectLeavewordByLwId" parameterType="Long" resultMap="LeavewordResult">
         <include refid="selectLeavewordVo"/>
         where lw_id = #{lwId}
     </select>
-        
+
     <insert id="insertLeaveword" parameterType="Leaveword" useGeneratedKeys="true" keyProperty="lwId">
         insert into leaveword
         <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="lwUserid != null">lw_userid,</if>
+            <if test="lwUsername != null">lw_username,</if>
             <if test="lwStuid != null">lw_stuid,</if>
             <if test="lwStuno != null">lw_stuno,</if>
             <if test="lwStuname != null">lw_stuname,</if>
@@ -52,8 +57,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="updateByid != null">update_byid,</if>
             <if test="updateBy != null">update_by,</if>
             <if test="updateTime != null">update_time,</if>
-         </trim>
+        </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="lwUserid != null">#{lwUserid},</if>
+            <if test="lwUsername != null">#{lwUsername},</if>
             <if test="lwStuid != null">#{lwStuid},</if>
             <if test="lwStuno != null">#{lwStuno},</if>
             <if test="lwStuname != null">#{lwStuname},</if>
@@ -66,12 +73,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="updateByid != null">#{updateByid},</if>
             <if test="updateBy != null">#{updateBy},</if>
             <if test="updateTime != null">#{updateTime},</if>
-         </trim>
+        </trim>
     </insert>
 
     <update id="updateLeaveword" parameterType="Leaveword">
         update leaveword
         <trim prefix="SET" suffixOverrides=",">
+            <if test="lwUserid != null">lw_userid = #{lwUserid},</if>
+            <if test="lwUsername != null">lw_username = #{lwUsername},</if>
             <if test="lwStuid != null">lw_stuid = #{lwStuid},</if>
             <if test="lwStuno != null">lw_stuno = #{lwStuno},</if>
             <if test="lwStuname != null">lw_stuname = #{lwStuname},</if>
@@ -93,7 +102,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </delete>
 
     <delete id="deleteLeavewordByLwIds" parameterType="String">
-        delete from leaveword where lw_id in 
+        delete from leaveword where lw_id in
         <foreach item="lwId" collection="array" open="(" separator="," close=")">
             #{lwId}
         </foreach>

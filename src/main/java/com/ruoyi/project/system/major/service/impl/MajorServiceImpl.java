@@ -2,6 +2,8 @@ package com.ruoyi.project.system.major.service.impl;
 
 import java.util.List;
 import com.ruoyi.common.utils.DateUtils;
+import com.ruoyi.common.utils.security.ShiroUtils;
+import com.ruoyi.project.system.user.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.project.system.major.mapper.MajorMapper;
@@ -54,7 +56,13 @@ public class MajorServiceImpl implements IMajorService
     @Override
     public int insertMajor(Major major)
     {
+        User curUser= ShiroUtils.getSysUser();
+        major.setCreateByid(curUser.getUserId());
+        major.setCreateBy(curUser.getUserName());
         major.setCreateTime(DateUtils.getNowDate());
+        major.setUpdateByid(curUser.getUserId());
+        major.setUpdateBy(curUser.getUserName());
+        major.setUpdateTime(DateUtils.getNowDate());
         return majorMapper.insertMajor(major);
     }
 
@@ -67,6 +75,9 @@ public class MajorServiceImpl implements IMajorService
     @Override
     public int updateMajor(Major major)
     {
+        User curUser= ShiroUtils.getSysUser();
+        major.setUpdateByid(curUser.getUserId());
+        major.setUpdateBy(curUser.getUserName());
         major.setUpdateTime(DateUtils.getNowDate());
         return majorMapper.updateMajor(major);
     }

@@ -2,6 +2,7 @@ package com.ruoyi.project.system.leaveword.mapper;
 
 import java.util.List;
 import com.ruoyi.project.system.leaveword.domain.Leaveword;
+import org.springframework.stereotype.Repository;
 
 /**
  * 留言Mapper接口
@@ -9,6 +10,7 @@ import com.ruoyi.project.system.leaveword.domain.Leaveword;
  * @author ruoyi
  * @date 2022-04-09
  */
+@Repository
 public interface LeavewordMapper 
 {
     /**

@@ -8,6 +8,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="prId"    column="pr_id"    />
         <result property="prPiid"    column="pr_piid"    />
         <result property="prPiname"    column="pr_piname"    />
+        <result property="prPiamount"    column="pr_piamount"    />
         <result property="prStuid"    column="pr_stuid"    />
         <result property="prStuno"    column="pr_stuno"    />
         <result property="prStuname"    column="pr_stuname"    />
@@ -22,13 +23,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectPaymentRecordVo">
-        select pr_id, pr_piid, pr_piname, pr_stuid, pr_stuno, pr_stuname, pr_paytime, delflag, create_byid, create_by, create_time, update_byid, update_by, update_time from payment_record
+        select pr_id, pr_piid, pr_piname,pr_piamount, pr_stuid, pr_stuno, pr_stuname, pr_paytime, delflag, create_byid, create_by, create_time, update_byid, update_by, update_time from payment_record
     </sql>
 
     <select id="selectPaymentRecordList" parameterType="PaymentRecord" resultMap="PaymentRecordResult">
         <include refid="selectPaymentRecordVo"/>
         <where>  
-            <if test="prPiid != null "> and pr_piid = #{prPiid}</if>
+            <if test="prPiid != null and prPiid != ''"> and pr_piid = #{prPiid}</if>
+            <if test="prStuid != null "> and pr_Stuid = #{prStuid}</if>
             <if test="prStuname != null  and prStuname != ''"> and pr_stuname like concat('%', #{prStuname}, '%')</if>
             <if test="prPaytime != null "> and pr_paytime = #{prPaytime}</if>
         </where>
@@ -44,6 +46,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="prPiid != null">pr_piid,</if>
             <if test="prPiname != null">pr_piname,</if>
+            <if test="prPiamount != null">pr_piamount,</if>
             <if test="prStuid != null">pr_stuid,</if>
             <if test="prStuno != null">pr_stuno,</if>
             <if test="prStuname != null">pr_stuname,</if>
@@ -59,6 +62,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="prPiid != null">#{prPiid},</if>
             <if test="prPiname != null">#{prPiname},</if>
+            <if test="prPiamount != null">#{prPiamount},</if>
             <if test="prStuid != null">#{prStuid},</if>
             <if test="prStuno != null">#{prStuno},</if>
             <if test="prStuname != null">#{prStuname},</if>
@@ -78,6 +82,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <trim prefix="SET" suffixOverrides=",">
             <if test="prPiid != null">pr_piid = #{prPiid},</if>
             <if test="prPiname != null">pr_piname = #{prPiname},</if>
+            <if test="prPiamount != null">pr_piamount = #{prPiamount},</if>
             <if test="prStuid != null">pr_stuid = #{prStuid},</if>
             <if test="prStuno != null">pr_stuno = #{prStuno},</if>
             <if test="prStuname != null">pr_stuname = #{prStuname},</if>

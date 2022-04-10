@@ -2,6 +2,8 @@ package com.ruoyi.project.system.student.service.impl;
 
 import java.util.List;
 import com.ruoyi.common.utils.DateUtils;
+import com.ruoyi.common.utils.security.ShiroUtils;
+import com.ruoyi.project.system.user.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.project.system.student.mapper.StudentMapper;
@@ -54,7 +56,13 @@ public class StudentServiceImpl implements IStudentService
     @Override
     public int insertStudent(Student student)
     {
+        User curUser= ShiroUtils.getSysUser();
+        student.setCreateByid(curUser.getUserId());
+        student.setCreateBy(curUser.getUserName());
         student.setCreateTime(DateUtils.getNowDate());
+        student.setUpdateByid(curUser.getUserId());
+        student.setUpdateBy(curUser.getUserName());
+        student.setUpdateTime(DateUtils.getNowDate());
         return studentMapper.insertStudent(student);
     }
 
@@ -67,6 +75,9 @@ public class StudentServiceImpl implements IStudentService
     @Override
     public int updateStudent(Student student)
     {
+        User curUser= ShiroUtils.getSysUser();
+        student.setUpdateByid(curUser.getUserId());
+        student.setUpdateBy(curUser.getUserName());
         student.setUpdateTime(DateUtils.getNowDate());
         return studentMapper.updateStudent(student);
     }

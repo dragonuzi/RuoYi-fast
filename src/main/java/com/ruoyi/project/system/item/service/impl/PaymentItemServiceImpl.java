@@ -2,6 +2,8 @@ package com.ruoyi.project.system.item.service.impl;
 
 import java.util.List;
 import com.ruoyi.common.utils.DateUtils;
+import com.ruoyi.common.utils.security.ShiroUtils;
+import com.ruoyi.project.system.user.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.project.system.item.mapper.PaymentItemMapper;
@@ -54,7 +56,13 @@ public class PaymentItemServiceImpl implements IPaymentItemService
     @Override
     public int insertPaymentItem(PaymentItem paymentItem)
     {
+        User curUser= ShiroUtils.getSysUser();
+        paymentItem.setCreateByid(curUser.getUserId());
+        paymentItem.setCreateBy(curUser.getUserName());
         paymentItem.setCreateTime(DateUtils.getNowDate());
+        paymentItem.setUpdateByid(curUser.getUserId());
+        paymentItem.setUpdateBy(curUser.getUserName());
+        paymentItem.setUpdateTime(DateUtils.getNowDate());
         return paymentItemMapper.insertPaymentItem(paymentItem);
     }
 
@@ -67,6 +75,9 @@ public class PaymentItemServiceImpl implements IPaymentItemService
     @Override
     public int updatePaymentItem(PaymentItem paymentItem)
     {
+        User curUser= ShiroUtils.getSysUser();
+        paymentItem.setUpdateByid(curUser.getUserId());
+        paymentItem.setUpdateBy(curUser.getUserName());
         paymentItem.setUpdateTime(DateUtils.getNowDate());
         return paymentItemMapper.updatePaymentItem(paymentItem);
     }

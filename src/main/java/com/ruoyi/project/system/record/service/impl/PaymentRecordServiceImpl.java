@@ -2,6 +2,8 @@ package com.ruoyi.project.system.record.service.impl;
 
 import java.util.List;
 import com.ruoyi.common.utils.DateUtils;
+import com.ruoyi.common.utils.security.ShiroUtils;
+import com.ruoyi.project.system.user.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.project.system.record.mapper.PaymentRecordMapper;
@@ -54,7 +56,13 @@ public class PaymentRecordServiceImpl implements IPaymentRecordService
     @Override
     public int insertPaymentRecord(PaymentRecord paymentRecord)
     {
+        User curUser= ShiroUtils.getSysUser();
+        paymentRecord.setCreateByid(curUser.getUserId());
+        paymentRecord.setCreateBy(curUser.getUserName());
         paymentRecord.setCreateTime(DateUtils.getNowDate());
+        paymentRecord.setUpdateByid(curUser.getUserId());
+        paymentRecord.setUpdateBy(curUser.getUserName());
+        paymentRecord.setUpdateTime(DateUtils.getNowDate());
         return paymentRecordMapper.insertPaymentRecord(paymentRecord);
     }
 

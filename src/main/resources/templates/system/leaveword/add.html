@@ -6,82 +6,73 @@
     <th:block th:include="include :: summernote-css" />
 </head>
 <body class="white-bg">
-    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
-        <form class="form-horizontal m" id="form-leaveword-add">
-            <div class="form-group">    
-                <label class="col-sm-3 control-label is-required">留言内容：</label>
-                <div class="col-sm-8">
-                    <input type="hidden" class="form-control" name="lwContent">
-                    <div class="summernote" id="lwContent"></div>
-                </div>
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <form class="form-horizontal m" id="form-leaveword-add">
+        <div class="form-group">
+            <label class="col-sm-3 control-label is-required">留言内容：</label>
+            <div class="col-sm-8">
+                <input type="hidden" class="form-control" name="lwContent">
+                <div class="summernote" id="lwContent"></div>
             </div>
-            <div class="form-group">    
-                <label class="col-sm-3 control-label">留言时间：</label>
-                <div class="col-sm-8">
-                    <div class="input-group date">
-                        <input name="lwLeavetime" class="form-control" placeholder="yyyy-MM-dd" type="text">
-                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                    </div>
-                </div>
-            </div>
-        </form>
-    </div>
-    <th:block th:include="include :: footer" />
-    <th:block th:include="include :: datetimepicker-js" />
-    <th:block th:include="include :: summernote-js" />
-    <script th:inline="javascript">
-        var prefix = ctx + "system/leaveword"
-        $("#form-leaveword-add").validate({
-            focusCleanup: true
-        });
+        </div>
+    </form>
+</div>
+<th:block th:include="include :: footer" />
+<th:block th:include="include :: datetimepicker-js" />
+<th:block th:include="include :: summernote-js" />
+<script th:inline="javascript">
+    var prefix = ctx + "system/leaveword"
+    $("#form-leaveword-add").validate({
+        focusCleanup: true
+    });
 
-        function submitHandler() {
-            if ($.validate.form()) {
-                $.operate.save(prefix + "/add", $('#form-leaveword-add').serialize());
-            }
+    function submitHandler() {
+        if ($.validate.form()) {
+            $.operate.save(prefix + "/add", $('#form-leaveword-add').serialize());
         }
+    }
 
-        $("input[name='lwLeavetime']").datetimepicker({
-            format: "yyyy-mm-dd",
-            minView: "month",
-            autoclose: true
-        });
+    $("input[name='lwLeavetime']").datetimepicker({
+        format: "yyyy-mm-dd",
+        minView: "month",
+        autoclose: true
+    });
 
-        $(function() {
-            $('.summernote').summernote({
-                lang: 'zh-CN',
-                dialogsInBody: true,
-                callbacks: {
-                    onChange: function(contents, $edittable) {
-                        $("input[name='" + this.id + "']").val(contents);
-                    },
-                    onImageUpload: function(files) {
-                        var obj = this;
-                    	var data = new FormData();
-                    	data.append("file", files[0]);
-                    	$.ajax({
-                            type: "post",
-                            url: ctx + "common/upload",
-                    		data: data,
-                    		cache: false,
-                    		contentType: false,
-                    		processData: false,
-                    		dataType: 'json',
-                    		success: function(result) {
-                    		    if (result.code == web_status.SUCCESS) {
-                    		        $('#' + obj.id).summernote('insertImage', result.url);
-                    		    } else {
-                    		        $.modal.alertError(result.msg);
-                    		    }
-                    		},
-                    		error: function(error) {
-                    		    $.modal.alertWarning("图片上传失败。");
-                    		}
-                    	});
-                    }
+    $(function() {
+        $('.summernote').summernote({
+            lang: 'zh-CN',
+            dialogsInBody: true,
+            callbacks: {
+                onChange: function(contents, $edittable) {
+                    $("input[name='" + this.id + "']").val(contents);
+                },
+                onImageUpload: function(files) {
+                    var obj = this;
+                    var data = new FormData();
+                    data.append("file", files[0]);
+                    $.ajax({
+                        type: "post",
+                        url: ctx + "common/upload",
+                        data: data,
+                        cache: false,
+                        contentType: false,
+                        processData: false,
+                        dataType: 'json',
+                        success: function(result) {
+                            if (result.code == web_status.SUCCESS) {
+                                $('#' + obj.id).summernote('insertImage', result.url);
+                            } else {
+                                $.modal.alertError(result.msg);
+                            }
+                        },
+                        error: function(error) {
+                            $.modal.alertWarning("图片上传失败。");
+                        }
+                    });
                 }
-            });
+            }
         });
-    </script>
+    });
+</script>
 </body>
 </html>

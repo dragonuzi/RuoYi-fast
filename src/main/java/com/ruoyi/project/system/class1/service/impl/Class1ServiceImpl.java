@@ -2,6 +2,8 @@ package com.ruoyi.project.system.class1.service.impl;
 
 import java.util.List;
 import com.ruoyi.common.utils.DateUtils;
+import com.ruoyi.common.utils.security.ShiroUtils;
+import com.ruoyi.project.system.user.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.project.system.class1.mapper.Class1Mapper;
@@ -54,7 +56,13 @@ public class Class1ServiceImpl implements IClass1Service
     @Override
     public int insertClass1(Class1 class1)
     {
+        User curUser= ShiroUtils.getSysUser();
+        class1.setCreateByid(curUser.getUserId());
+        class1.setCreateBy(curUser.getUserName());
         class1.setCreateTime(DateUtils.getNowDate());
+        class1.setUpdateByid(curUser.getUserId());
+        class1.setUpdateBy(curUser.getUserName());
+        class1.setUpdateTime(DateUtils.getNowDate());
         return class1Mapper.insertClass1(class1);
     }
 
@@ -67,6 +75,9 @@ public class Class1ServiceImpl implements IClass1Service
     @Override
     public int updateClass1(Class1 class1)
     {
+        User curUser= ShiroUtils.getSysUser();
+        class1.setUpdateByid(curUser.getUserId());
+        class1.setUpdateBy(curUser.getUserName());
         class1.setUpdateTime(DateUtils.getNowDate());
         return class1Mapper.updateClass1(class1);
     }

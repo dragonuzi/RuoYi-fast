@@ -2,6 +2,8 @@ package com.ruoyi.project.system.leaveword.service.impl;
 
 import java.util.List;
 import com.ruoyi.common.utils.DateUtils;
+import com.ruoyi.common.utils.security.ShiroUtils;
+import com.ruoyi.project.system.user.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.project.system.leaveword.mapper.LeavewordMapper;
@@ -54,7 +56,16 @@ public class LeavewordServiceImpl implements ILeavewordService
     @Override
     public int insertLeaveword(Leaveword leaveword)
     {
+        User curUser= ShiroUtils.getSysUser();
+        leaveword.setCreateByid(curUser.getUserId());
+        leaveword.setCreateBy(curUser.getUserName());
         leaveword.setCreateTime(DateUtils.getNowDate());
+        leaveword.setUpdateByid(curUser.getUserId());
+        leaveword.setUpdateBy(curUser.getUserName());
+        leaveword.setUpdateTime(DateUtils.getNowDate());
+        leaveword.setLwLeavetime(DateUtils.getNowDate());
+        leaveword.setLwUserid(curUser.getUserId());
+        leaveword.setLwUsername(curUser.getUserName());
         return leavewordMapper.insertLeaveword(leaveword);
     }
 
@@ -67,6 +78,9 @@ public class LeavewordServiceImpl implements ILeavewordService
     @Override
     public int updateLeaveword(Leaveword leaveword)
     {
+        User curUser= ShiroUtils.getSysUser();
+        leaveword.setUpdateByid(curUser.getUserId());
+        leaveword.setUpdateBy(curUser.getUserName());
         leaveword.setUpdateTime(DateUtils.getNowDate());
         return leavewordMapper.updateLeaveword(leaveword);
     }

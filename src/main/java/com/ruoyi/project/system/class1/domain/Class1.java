@@ -7,9 +7,9 @@ import com.ruoyi.framework.web.domain.BaseEntity;
 
 /**
  * 班级对象 class1
- * 
+ *
  * @author ruoyi
- * @date 2022-04-09
+ * @date 2022-04-10
  */
 public class Class1 extends BaseEntity
 {
@@ -29,8 +29,11 @@ public class Class1 extends BaseEntity
     @Excel(name = "专业")
     private String classMajor;
 
+    /** 班级描述 */
+    private String classDescription;
+
     /** 删除标记 */
-    private String delflag;
+    private Integer delflag;
 
     /** 创建人id */
     private Long createByid;
@@ -74,12 +77,21 @@ public class Class1 extends BaseEntity
     {
         return classMajor;
     }
-    public void setDelflag(String delflag)
+    public void setClassDescription(String classDescription)
+    {
+        this.classDescription = classDescription;
+    }
+
+    public String getClassDescription()
+    {
+        return classDescription;
+    }
+    public void setDelflag(Integer delflag)
     {
         this.delflag = delflag;
     }
 
-    public String getDelflag()
+    public Integer getDelflag()
     {
         return delflag;
     }
@@ -105,18 +117,19 @@ public class Class1 extends BaseEntity
     @Override
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
-            .append("classId", getClassId())
-            .append("className", getClassName())
-            .append("classMajorid", getClassMajorid())
-            .append("classMajor", getClassMajor())
-            .append("remark", getRemark())
-            .append("delflag", getDelflag())
-            .append("createByid", getCreateByid())
-            .append("createBy", getCreateBy())
-            .append("createTime", getCreateTime())
-            .append("updateByid", getUpdateByid())
-            .append("updateBy", getUpdateBy())
-            .append("updateTime", getUpdateTime())
-            .toString();
+                .append("classId", getClassId())
+                .append("className", getClassName())
+                .append("classMajorid", getClassMajorid())
+                .append("classMajor", getClassMajor())
+                .append("classDescription", getClassDescription())
+                .append("remark", getRemark())
+                .append("delflag", getDelflag())
+                .append("createByid", getCreateByid())
+                .append("createBy", getCreateBy())
+                .append("createTime", getCreateTime())
+                .append("updateByid", getUpdateByid())
+                .append("updateBy", getUpdateBy())
+                .append("updateTime", getUpdateTime())
+                .toString();
     }
 }

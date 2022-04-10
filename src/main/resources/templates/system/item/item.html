@@ -15,10 +15,6 @@
                                 <input type="text" name="piName"/>
                             </li>
                             <li>
-                                <label>截止时间：</label>
-                                <input type="text" class="time-input" placeholder="请选择截止时间" name="piDeadline"/>
-                            </li>
-                            <li>
                                 <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
                                 <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
                             </li>
@@ -39,6 +35,9 @@
                 </a>
                 <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="system:item:export">
                     <i class="fa fa-download"></i> 导出
+                </a>
+                <a class="btn btn-primary multiple disabled" onclick="$.operate.pay()" shiro:hasPermission="system:item:pay">
+                    <i class="fa fa-money"></i> 去缴费
                 </a>
             </div>
             <div class="col-sm-12 select-table table-striped">
@@ -62,6 +61,11 @@
                 modalName: "缴费项目",
                 columns: [{
                     checkbox: true
+                },
+                {
+                    field: 'piId',
+                    title: '缴费项id',
+                    visible: false
                 },
                 {
                     field: 'piName',
