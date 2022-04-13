@@ -1,6 +1,11 @@
 package com.ruoyi.project.system.student.controller;
 
 import java.util.List;
+
+import com.ruoyi.project.system.class1.domain.Class1;
+import com.ruoyi.project.system.class1.service.IClass1Service;
+import com.ruoyi.project.system.major.domain.Major;
+import com.ruoyi.project.system.major.service.IMajorService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -33,7 +38,10 @@ public class StudentController extends BaseController
 
     @Autowired
     private IStudentService studentService;
-
+    @Autowired
+    private IMajorService majorService;
+    @Autowired
+    private IClass1Service class1Service;
     @RequiresPermissions("system:student:view")
     @GetMapping()
     public String student()
@@ -74,6 +82,11 @@ public class StudentController extends BaseController
     @GetMapping("/add")
     public String add()
     {
+        //采取planb，学生信息不允许增删，新增学生用户时自动添加
+        //需要提供未注册学生信息的学生角色用户
+        //所有的专业列表
+        //所有的班级列表(下一步考虑实现专业和班级的互动)
+
         return prefix + "/add";
     }
 
@@ -98,6 +111,11 @@ public class StudentController extends BaseController
     {
         Student student = studentService.selectStudentByStuId(stuId);
         mmap.put("student", student);
+        //后续考虑处理专业班级的联动
+        List<Major> majors=majorService.selectMajorList(new Major());
+        mmap.put("majors",majors);
+        List<Class1> classes=class1Service.selectClass1List(new Class1());
+        mmap.put("classes",classes);
         return prefix + "/edit";
     }
 

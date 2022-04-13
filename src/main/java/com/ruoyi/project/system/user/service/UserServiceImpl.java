@@ -1,9 +1,14 @@
 package com.ruoyi.project.system.user.service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.validation.Validator;
+
+import com.ruoyi.common.utils.DateUtils;
+import com.ruoyi.project.system.student.domain.Student;
+import com.ruoyi.project.system.student.mapper.StudentMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,6 +60,8 @@ public class UserServiceImpl implements IUserService
 
     @Autowired
     private UserRoleMapper userRoleMapper;
+    @Autowired
+    private StudentMapper studentMapper;
 
     @Autowired
     private IConfigService configService;
@@ -224,6 +231,20 @@ public class UserServiceImpl implements IUserService
         insertUserPost(user);
         // 新增用户与角色管理
         insertUserRole(user.getUserId(), user.getRoleIds());
+        //如果新增用户到学生角色，则生成一条学生信息
+        if(Arrays.asList(user.getRoleIds()).contains(102l)){
+            User sysUser=ShiroUtils.getSysUser();
+            User newuser=userMapper.selectUserByLoginName(user.getLoginName());
+            Student student=new Student();
+            student.setStuUserid(newuser.getUserId());
+            student.setStuUsername(newuser.getUserName());
+            student.setStuGender(newuser.getSex());
+            student.setStuPhoneno(newuser.getPhonenumber());
+            student.setCreateBy(sysUser.getUserName());
+            student.setCreateByid(sysUser.getUserId());
+            student.setCreateTime(DateUtils.getNowDate());
+            studentMapper.insertStudent(student);
+        }
         return rows;
     }
 
